@@ -5,22 +5,22 @@ import Axios from "axios";
 export default function SearchSection() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null); 
+  const [result, setResult] = useState(null);
 
-  const handleSearch = async(articleData) => {
+  const handleSearch = async (articleData) => {
     if (!query) return;
     setLoading(true);
     setResult(null);
 
-    try{
+    try {
       const response = await Axios.post('http://localhost:8000/api/fact-check/', {
         query: articleData,
-  });
+      });
       console.log(response.data);
       setResult(response.data);
       setLoading(false);
     }
-    catch(error){
+    catch (error) {
       console.log("There was an error!", error)
       setLoading(false);
     }
@@ -58,57 +58,62 @@ export default function SearchSection() {
       </div>
 
 
- {/* ✅ Result Card */}
-{result && (
-  <div
-    className={`mt-6 w-full max-w-2xl transition-all duration-1500 ease-out
+      {/* ✅ Result Card */}
+      {result && (
+        <div
+          className={`mt-6 w-full max-w-2xl transition-all duration-1500 ease-out
       ${result ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}
     `}
-  >
-    <div
-      className={`p-6 rounded-2xl shadow-lg border
-        ${
-          result.isFake
-            ? "border-red-500 bg-red-50"
-            : result.error
-            ? "border-gray-400 bg-gray-100"
-            : "border-green-500 bg-green-50"
-        }`}
-    >
-      <h3 className="text-xl font-semibold flex items-center gap-2">
-        {result.error
-          ? "⚠️ Error"
-          : result.isFake
-          ? "❌ Fake News Detected"
-          : "✅ Verified News"}
-      </h3>
-      <p className="text-gray-700 mt-2">
-        {result.error
-          ? result.error
-          : result.message || "No detailed explanation available."}
-      </p>
-
-      {!result.error && (
-        <button
-          onClick={() =>
-            alert(result.details || "No extra details available.")
-          }
-          className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
         >
-          View Details
-        </button>
+          <div
+            className={`p-6 rounded-2xl shadow-lg border
+        ${result.isFake
+                ? "border-red-500 bg-red-50"
+                : result.error
+                  ? "border-gray-400 bg-gray-100"
+                  : "border-green-500 bg-green-50"
+              }`}
+          >
+            <h3 className="text-xl font-semibold flex items-center gap-2">
+              {result.error
+                ? "⚠️ Error"
+                : result.isFake
+                  ? "❌ Fake News Detected"
+                  : (
+                    <>
+                      ✅ Verified News<br />
+                      {result.article_text}
+                    </>
+                  )
+              }
+      </h3>
+            <p className="text-gray-700 mt-2">
+              {result.error
+                ? result.error
+                : result.message || "No detailed explanation available."}
+            </p>
+
+            {!result.error && (
+              <button
+                onClick={() =>
+                  alert(result.details || "No extra details available.")
+                }
+                className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+              >
+                View Details
+              </button>
+            )}
+          </div>
+        </div>
       )}
-    </div>
-  </div>
-)}
 
 
 
-      
+
 
       {/* Example queries */}
       <div className="mt-6 text-sm text-gray-500 space-x-2">
-        Try: 
+        Try:
         <span
           onClick={() => handleExampleClick("India wins World Cup 2025")}
           className="cursor-pointer text-blue-600 hover:underline"
