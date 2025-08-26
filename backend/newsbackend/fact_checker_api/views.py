@@ -5,8 +5,18 @@ import requests
 from rest_framework.permissions import AllowAny
 from bs4 import BeautifulSoup
 from openai import OpenAI
+from dotenv import load_dotenv
+import os
+
+
+# Load the environment variables from your .env file
+load_dotenv()
+
+# Load NLP API key from environment variables
+NLP_api_key = os.getenv("NLP_API_KEY")
 
 class FactCheckView(APIView):
+    permission_classes = [AllowAny]
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -43,7 +53,7 @@ class FactCheckView(APIView):
                 try:
                     client = OpenAI(
                         base_url="https://openrouter.ai/api/v1",
-                        api_key= "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",
+                        api_key= NLP_api_key,
                     )
 
                     prompt_for_ai = f"summarize the following article:\n\nTitle: {article_title}\n\nText: {article_text}"

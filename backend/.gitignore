@@ -1,0 +1,12 @@
+# Ignore environment file that contains secrets
+.env
+
+# Ignore Python-specific files
+__pycache__/
+*.pyc
+
+# Ignore virtual environment directory
+venv/
+
+# Ignore database file
+db.sqlite3
