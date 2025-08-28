@@ -82,7 +82,7 @@ export default function SearchSection() {
                   : (
                     <>
                       ✅ Verified News<br />
-                      {result.article_text}
+                      {result.final_verdict}
                     </>
                   )
               }
